@@ -332,3 +332,4 @@ En el proyecto aún no se puede conocer información útil con respecto a las ca
 - [What is a CSV file?](https://data.europa.eu/apps/data-visualisation-guide/csv-files/) [Artículo]
 - [Qué es CSV](https://www.youtube.com/watch?v=SaHIUR9jIPY) [Video]
 - [Introduction to Java Serialization](https://www.baeldung.com/java-serialization) [Artículo]
+- [Different ways of reading a text file in Java](https://www.geeksforgeeks.org/different-ways-reading-text-file-java/) [Artículo]
