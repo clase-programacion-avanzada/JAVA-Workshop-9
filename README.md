@@ -252,7 +252,7 @@ Para lograr esto, se recomienda crear una nueva vista que permita al usuario sel
 
 ### Estructura de los archivos de texto
 
-Los archivos de texto se encuentran en la carpeta [resources](src/main/resources) del proyecto. Estos archivos contienen la información de los artistas, canciones, listas de reproducción y clientes de la aplicación de música.
+Los archivos de texto se encuentran en la carpeta [resources](src/main/resources) del proyecto. Debe poner esos archivos en la misma carpeta de su proyecto. Estos archivos contienen la información de los artistas, canciones, listas de reproducción y clientes de la aplicación de música.
 
 Los archivos CSV contienen la siguiente estructura:
 
