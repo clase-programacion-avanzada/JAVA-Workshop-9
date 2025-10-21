@@ -6,9 +6,8 @@ En este taller se trabajará la carga y escritura de archivos de texto y binario
 
 1. [Preguntas teóricas](#preguntas-teóricas)
 2. [Enunciado](#enunciado)
-   1. [Estructura de los archivos de texto](#estructura-de-los-archivos-de-texto)
-   2. [Archivos binarios](#archivos-binarios)
-   3. [Cambios adicionales](#cambios-adicionales)
+   1. [Cargar y guardar el estado del programa](#cargar-y-guardar-el-estado-del-programa)
+   2. [Generación de reportes](#generación-de-reportes)
 3. [Calificación](#calificación)
 4. [¿Qué sigue?](#qué-sigue)
 
@@ -247,78 +246,91 @@ La pregunta 19 y 20 hacen referencia a este código.34
 
 El programa debe permitir ahora cargar y guardar la información de los artistas, canciones, listas de reproducción y clientes en archivos de texto y binarios. Para esto, se deben crear los métodos necesarios en las clases de servicios y controladores.
 Además, se deben capturar las excepciones que puedan surgir al cargar o guardar los archivos.
+    - Recuerde que al momento de cargar los archivos, se deben cumplir las validaciones presentes en la entrega anterior.
 
 Para lograr esto, se recomienda crear una nueva vista que permita al usuario seleccionar la opción de cargar o guardar los archivos de texto o binarios.
 
-### Estructura de los archivos de texto
 
-Los archivos de texto se encuentran en la carpeta [resources](src/main/resources) del proyecto. Debe poner esos archivos en la misma carpeta de su proyecto. Estos archivos contienen la información de los artistas, canciones, listas de reproducción y clientes de la aplicación de música.
+### Cargar y guardar el estado del programa
 
-Los archivos CSV contienen la siguiente estructura:
+El programa debe permitir cargar la información desde uno o varios archivos de texto con una estructura definida por el grupo. 
+Además, por practicidad a la hora de probar, el programa debe permitir exportar la información a archivos de texto con la misma estructura.
 
-- `artists.csv`: Contiene la información de los artistas. El archivo consta de una serie de líneas donde cada una representa un artista; cada uno de los atributos de un artista va a estar separado por el caracter _";"_. En el siguiente ejemplo, la información que inicia con _"#"_ indica que es un comentario, el archivo final no lo tendrá: </br>
-    ```csv
-        #id;name
-        33f20939-c665-4e1d-aac1-e340c3d95656;Shakira
-        62506fc4-639a-4160-8f26-6c478462621e;Wyclef Jean
+Adicionalmente, se debe permitir crear un archivo binario que contenga la información serializada de los artistas, canciones, listas de reproducción y clientes.
+El programa debe permitir cargar la información desde el archivo binario creado previamente.
+
+### Generación de reportes
+
+Su proyecto debe permitir generar reportes con información relevante de los artistas, canciones, listas de reproducción y clientes.
+
+El proyecto debe ser modificado para agregar un nuevo módulo que permita la generación de reportes. **Los reportes deben ser guardados en archivos de texto y deben ser mostrados en pantalla**. Los reportes son los siguientes:
+
+
+1. Se debe mostrar la popularidad de cada artista (Si un artista no existe dentro de las listas de reproducción, o no es seguido, no debe mostrarse en el reporte). La popularidad de un artista se calcula de la siguiente manera:
+
+    - Si un artista aparece en una lista de reproducción, se le suma 1 a su popularidad por cada canción que tenga en la lista de reproducción.
+    - Por cada follow que tenga un cliente de un artista, se le suma 2 a la popularidad del artista.
+
+   El reporte debe ser guardado en un archivo de texto llamado `reporte_popularidad.txt`. En este archivo deben aparecer los artistas con una popularidad mayor a 0. El formato del archivo debe ser el siguiente:
+
     ```
-- `songs.csv`: Contiene la información de las canciones. El archivo consta de una serie de líneas donde cada una representa una canción; cada uno de los atributos de una canción va a estar separado por el caracter _";"_. En el siguiente ejemplo, la información que inicia con _"#"_ indica que es un comentario, el archivo final no lo tendrá: </br>
-    ```csv
-        # id;name;{artist_id1,artist_id2...};genre;duration;album
-        # Nota: Los artistas de la canción están separados por comas y encerrados entre llaves.
-        # En este caso, la canción 'Hips Don't Lie' de Shakira y Wyclef Jean está en el archivo.
-        
-        92ab9e23-613e-4ae3-9378-0824e846836c;Hips Don't Lie;{33f20939-c665-4e1d-aac1-e340c3d95656,62506fc4-639a-4160-8f26-6c478462621e};Pop;223;Oral Fixation, Vol. 2
+    Reporte de popularidad
+    
+    <Nombre del artista 1>: <Popularidad>
+    <Nombre del artista 2>: <Popularidad>
+    ...
+    <Nombre del artista n>: <Popularidad>
+    
     ```
-- `playlists.csv`: Contiene la información de las listas de reproducción. El archivo consta de una serie de líneas donde cada una representa una lista de reproducción; cada uno de los atributos de una lista de reproducción va a estar separado por el caracter _";"_. En el siguiente ejemplo, la información que inicia con _"#"_ indica que es un comentario, el archivo final no lo tendrá: </br>
-    ```csv
-        # id;name;{song_id1,song_id2...}
-        # Nota: Las canciones de la lista de reproducción están separadas por comas y encerradas entre llaves.
-        # En este caso, la playlist 'PlayList2' contiene la canción 'Hips Don't Lie'.
-        
-        4e9f14c7-70d5-4059-9fa6-fe59272bc375;PlayList2;{92ab9e23-613e-4ae3-9378-0824e846836c}
+2. Para cada cliente, se debe mostrar la cantidad de canciones que tiene en sus listas de reproducción, la cantidad de artistas que sigue y el nombre del artista que más escucha (Este artista será el que más se repita en las listas de reproducción). El reporte debe ser guardado en un archivo de texto llamado `reporte_clientes.txt`. El formato del archivo debe ser el siguiente:
+
     ```
-- `customers.csv`: Contiene la información de los clientes. El archivo consta de una serie de líneas donde cada una representa un cliente; cada uno de los atributos de un cliente va a estar separado por el caracter _";"_. En el siguiente ejemplo, la información que inicia con _"#"_ indica que es un comentario, el archivo final no lo tendrá: </br>
-    ```csv
-        # id;username;password;first_name;last_name;age;{artist_id1,artist_id2...};{playlist_id1,playlist_id2...}
-        # Nota: Los artistas y las listas de reproducción del cliente están separados por comas y encerrados entre llaves.
-        # En este caso, el cliente 'Juan' sigue a Shakira y tiene la lista de reproducción 'PlayList2'.
-        
-        # En este caso, el cliente 'Marcusfenix' tiene 34 años y tiene la playlist 'PlayList2'.
-        # Además, sigue a Shakira.
-               
-         d4e6c3c7-54eb-4edc-94c7-416504663f82;Marcusfenix;G3ars_1234567;Marcus;Fenix;34;{33f20939-c665-4e1d-aac1-e340c3d95656};{4e9f14c7-70d5-4059-9fa6-fe59272bc375}
+    Reporte de clientes
+    
+    <Nombre del cliente 1>
+    - Canciones en listas de reproducción: <Cantidad de canciones>
+    - Artistas seguidos: <Cantidad de artistas>
+    - Artista que más escucha: <Nombre del artista>
+   
+    <Nombre del cliente 2>
+    - Canciones en listas de reproducción: <Cantidad de canciones>
+    - Artistas seguidos: <Cantidad de artistas>
+    - Artista que más escucha: <Nombre del artista>
+   
+    ...
+   
+    <Nombre del cliente n>
+    - Canciones en listas de reproducción: <Cantidad de canciones>
+    - Artistas seguidos: <Cantidad de artistas>
+    - Artista que más escucha: <Nombre del artista>
+   
     ```
-Los archivos de texto deben poder ser leídos y escritos por el programa. Al ser escritos, debe tener la misma estructura que los archivos de ejemplo (incluyendo los saltos de línea).
+3. Se debe mostrar, para un cliente en particular, el top 3 artistas preferidos (en orden): los 3 artistas que más se repiten en las listas de reproducción del cliente. El reporte debe ser guardado en un archivo de texto llamado `reporte_top3_<nombre_cliente>.txt`, donde `<nombre_cliente>` es el nombre del cliente para el cual se está generando el reporte. El formato del archivo debe ser el siguiente:
 
-### Archivos binarios
-
-Los archivos binarios se encuentran en la carpeta [resources](src/main/resources) del proyecto. Estos archivos contienen la información de los artistas, canciones, listas de reproducción y clientes de la aplicación de música.
-
-Los archivos binarios contienen la información serializada de las clases. Estos archivos deben poder ser leídos y escritos por el programa.
-
-### Cambios adicionales
-
-Además de estos cambios, se debe modificar el modelo de clientes para que el atributo `followedArtists` sea un `Set` en lugar de una lista. Esto se debe a que un cliente no puede seguir a un mismo artista más de una vez.
-
+    ```
+    Top 3 artistas preferidos de <Nombre del cliente>
+    
+    1. <Nombre del artista 1>
+    2. <Nombre del artista 2>
+    3. <Nombre del artista 3>
+    
+    ```
 [Volver al índice](#indice)
 
 ## Calificación
 
 El programa debe compilar y ejecutar sin errores. Se debe cumplir con los siguientes requerimientos:
 
-1. Las clases deben estar en los paquetes correctos (servicios, controladores, vistas, modelos y excepciones). (0.25)
-2. La clase `Main` y las clases del paquete `views` son las únicas que pueden interactuar con el usuario.(0.25)
-3. Los controladores deben llamar a los métodos de los servicios correspondientes.(0.25)
-4. Los servicios deben llamar a los métodos de las clases del paquete `models` correspondientes.(0.25)
-5. El programa debe cargar los archivos csv.(1.0)
-6. El programa debe exportar los archivos csv.(1.0)
-7. El programa debe permitir guardar los archivos serializados.(1.0)
-8. El programa debe permitir cargar los archivos serializados.(1.0)
+
+1. El programa debe cargar los archivos csv.(1.0)
+2. El programa debe exportar los archivos csv.(1.0)
+3. El programa debe permitir guardar los archivos serializados.(0.5)
+4. El programa debe permitir cargar los archivos serializados.(0.5)
+5. El programa debe generar los reportes solicitados, guardarlos en archivos de texto y mostrarlos en pantalla.(2.0)
 
 **Este taller hace parte de su proyecto. Los posteriores talleres no se calificarán hasta que se haya completado este.
-Si todo está correcto, sumará 1.0 a su proyecto final.
-Este taller debe ser entregado durante la semana 13**
+Si todo está correcto, sumará 2.0 a su proyecto final.
+Este taller debe ser entregado durante la semana 14**
 
 ## ¿Qué sigue?
 
